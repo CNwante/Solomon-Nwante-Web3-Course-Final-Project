@@ -1,9 +1,11 @@
 import { ethers } from 'ethers';
+import { VOTING_CONTRACT_ABI } from './contractABI.js';
 
 let provider;
 let signer;
 
-// DOM elements
+/* DOM elements
+================*/
 const connectWalletButton = document.getElementById('connect-wallet');
 const walletInfo = document.getElementById('wallet-info');
 const addressSpan = document.getElementById('address');
@@ -51,7 +53,8 @@ sendEthButton.addEventListener('click', async () => {
   }
 
   try {
-    // Convert amount to wei and send transaction
+    /* Convert amount to wei and send transaction
+    ==============================================*/
     const tx = await signer.sendTransaction({
       to: recipient,
       value: ethers.utils.parseEther(amount),
@@ -63,5 +66,46 @@ sendEthButton.addEventListener('click', async () => {
   } catch (error) {
     console.error('Error sending ETH:', error);
     alert('Failed to send ETH. Please try again.');
+  }
+});
+
+/* Voting contract address
+===========================*/
+const VOTING_CONTRACT_ADDRESS = '0xB2E1185468e57A801a54162F27725CbD5B0EB4a6';
+
+/* DOM elements
+===========================*/
+const castVoteButton = document.getElementById('cast-vote');
+const proposalSelect = document.getElementById('proposal');
+const voteMessageParagraph = document.getElementById('vote-message');
+
+/* Cast a vote
+=================*/
+castVoteButton.addEventListener('click', async () => {
+  if (!signer) {
+    alert('Please connect your wallet first.');
+    return;
+  }
+
+  const proposalId = proposalSelect.value;
+
+  try {
+    /* Initialize the contract
+    ===========================*/
+    const votingContract = new ethers.Contract(
+      VOTING_CONTRACT_ADDRESS,
+      VOTING_CONTRACT_ABI,
+      signer
+    );
+
+    const tx = await votingContract.vote(proposalId);
+    await tx.wait();
+
+    voteMessageParagraph.textContent = `Vote successful! Transaction Hash: ${tx.hash}`;
+    voteMessageParagraph.style.color = 'green';
+  } catch (error) {
+    console.error('Error casting vote:', error);
+    voteMessageParagraph.textContent = 'Failed to cast vote. Please try again.';
+    voteMessageParagraph.style.color = 'red';
   }
 });
