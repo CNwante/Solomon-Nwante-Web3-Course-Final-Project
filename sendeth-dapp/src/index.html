@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SendETH DApp</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 500px;
+        margin: auto;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      input,
+      button {
+        box-sizing: border-box;
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>A Simple SendETH DApp</h1>
+      <p>Sart by clickin on the connect wallet button below</p>
+      <button id="connect-wallet">Connect Wallet</button>
+      <div id="wallet-info" style="display: none">
+        <p><strong>Address:</strong> <span id="address"></span></p>
+        <p><strong>Balance:</strong> <span id="balance"></span> ETH</p>
+      </div>
+      <h2>Send ETH</h2>
+      <input id="recipient" type="text" placeholder="Recipient Address" />
+      <input id="amount" type="number" placeholder="Amount (ETH)" />
+      <button id="send-eth">Send ETH</button>
+      <p id="message" style="color: green"></p>
+    </div>
+    <script type="module" src="./dapp.js"></script>
+  </body>
+</html>
